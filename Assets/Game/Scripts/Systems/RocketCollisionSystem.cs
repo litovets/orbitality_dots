@@ -60,6 +60,9 @@ public class RocketCollisionSystem : JobComponentSystem
 
     protected override JobHandle OnUpdate(JobHandle inputDependencies)
     {
+        if (GetSingleton<GamePause>().IsOn)
+            return inputDependencies;
+
         var job = new RocketTriggerJob
         {
             rocketEntities = GetComponentDataFromEntity<RocketBaseStats>(),

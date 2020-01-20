@@ -20,6 +20,9 @@ public class PlanetMovementSystem : JobComponentSystem
 
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
+        if (GetSingleton<GamePause>().IsOn)
+            return inputDeps;
+
         MoveJob job = new MoveJob { DeltaTime = Time.DeltaTime };
         return job.Schedule(this, inputDeps);
 

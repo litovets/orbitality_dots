@@ -9,6 +9,9 @@ public class RocketGravitySystem : ComponentSystem
 
     protected override void OnUpdate()
     {
+        if (GetSingleton<GamePause>().IsOn)
+            return;
+
         Entities.ForEach((Entity e, ref Translation rocketTranslation, ref Velocity vel, ref RocketBaseStats stats) =>
         {
             float3 rocketPos = rocketTranslation.Value;
