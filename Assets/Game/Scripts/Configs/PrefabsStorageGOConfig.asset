@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b903aa6cacfd21e42b1a83b87c11e195, type: 3}
+  m_Name: PrefabsStorageGOConfig
+  m_EditorClassIdentifier: 
+  PlanetHUD: {fileID: 7976070038323989432, guid: 44592ee3967142e46b9a808b0d6f171f,
+    type: 3}
+  GameHUD: {fileID: 1245316547768972792, guid: c1aee7b49c2dc9645a2d7abed4843814, type: 3}

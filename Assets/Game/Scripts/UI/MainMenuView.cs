@@ -27,11 +27,8 @@ public class MainMenuView : MonoBehaviour
     {
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        Entity entity = entityManager.CreateEntity(typeof(GamePause));
-        entityManager.AddComponentData(entity, new GamePause { IsOn = false });
-
         int playersCount = (int)_playersCountSlider.value;        
-        entity = entityManager.CreateEntity(typeof(CreatePlayers));
+        Entity entity = entityManager.CreateEntity(typeof(CreatePlayers));
         entityManager.SetComponentData(entity, new CreatePlayers { Value = playersCount });
 
         entity = entityManager.CreateEntity(typeof(AddGameHUD));

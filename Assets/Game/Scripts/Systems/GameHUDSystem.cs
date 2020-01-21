@@ -15,7 +15,7 @@ public class GameHUDSystem : ComponentSystem
         Entities.ForEach((Entity e, ref AddGameHUD addHud) =>
         {
             PrefabsStorageComponent prefabsStorage = GetSingleton<PrefabsStorageComponent>();
-            GameObject hudObj = GameObject.Instantiate(prefabsStorage.GameHUD, prefabsStorage.Canvas.transform);
+            GameObject hudObj = GameObject.Instantiate(CompositionRoot.PrefabsGO.GameHUD, CompositionRoot.CanvasGO.transform);
             _gameHud = hudObj.GetComponent<GameHUD>();
 
             PostUpdateCommands.DestroyEntity(e);

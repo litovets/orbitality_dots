@@ -15,7 +15,7 @@ public class PlanetHUDSystem : ComponentSystem
         Entities.ForEach((Entity e, ref AddPlanetHUD addHud) =>
         {
             PrefabsStorageComponent prefabsStorage = GetSingleton<PrefabsStorageComponent>();
-            GameObject hudObj = GameObject.Instantiate(prefabsStorage.PlanetHUD, prefabsStorage.Canvas.transform);
+            GameObject hudObj = GameObject.Instantiate(CompositionRoot.PrefabsGO.PlanetHUD, CompositionRoot.CanvasGO.transform);
             PlanetHUD hud = hudObj.GetComponent<PlanetHUD>();
             hud?.Initialize(e);
             _huds.Add(e, hud);
