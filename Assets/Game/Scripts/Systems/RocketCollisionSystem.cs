@@ -1,30 +1,12 @@
 ﻿using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Physics;
 using Unity.Physics.Systems;
 
+[UpdateAfter(typeof(EndFramePhysicsSystem))]
 public class RocketCollisionSystem : JobComponentSystem
 {
-    [BurstCompile]
-    struct RocketCollisionSystemJob : ICollisionEventsJob
-    {
-        public ComponentDataFromEntity<RocketBaseStats> rocketEntities;
-        public EntityCommandBuffer.Concurrent CommandBuffer;
-
-        public void Execute(CollisionEvent collisionEvent)
-        {
-            Entity rocketEntity = rocketEntities.HasComponent(collisionEvent.Entities.EntityA) ? collisionEvent.Entities.EntityA : collisionEvent.Entities.EntityB;
-            Entity bodyEntity = rocketEntities.HasComponent(collisionEvent.Entities.EntityA) ? collisionEvent.Entities.EntityA : collisionEvent.Entities.EntityB;
-
-            int damage = rocketEntities[rocketEntity].Damage;
-            CommandBuffer.AddComponent(0, bodyEntity, new TakeDamage { Value = damage });
-
-            CommandBuffer.DestroyEntity(0, rocketEntity);
-        }
-    }
-
     [BurstCompile]
     struct RocketTriggerJob : ITriggerEventsJob
     {

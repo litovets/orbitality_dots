@@ -20,27 +20,30 @@ public class PlanetSpawnSystem : ComponentSystem
 
     protected override void OnUpdate()
     {
-        Entities.ForEach((Entity e, ref CreatePlayers createPlayers) =>
+        Entities.ForEach((ref PrefabsStorageComponent prefabsStorage) =>
         {
-            PrefabsStorageComponent prefabsStorage = GetSingleton<PrefabsStorageComponent>();
-            List<int> usedRadiusIndexes = new List<int>();
+            var storage = prefabsStorage;
+            Entities.ForEach((Entity e, ref CreatePlayers createPlayers) =>
+            {                
+                List<int> usedRadiusIndexes = new List<int>();
 
-            while (_count < createPlayers.Value)
-            {
-                if (_count == 0)
+                while (_count < createPlayers.Value)
                 {
-                    Entity playerEntity = CreatePlanetEntity(prefabsStorage.PlanetPrefab, usedRadiusIndexes);
-                    EntityManager.AddComponentData(playerEntity, new PlayerTag());
+                    if (_count == 0)
+                    {
+                        Entity playerEntity = CreatePlanetEntity(storage.PlanetPrefab, usedRadiusIndexes);
+                        EntityManager.AddComponentData(playerEntity, new PlayerTag());
+                        ++_count;
+                        continue;
+                    }
+
+                    CreatePlanetEntity(storage.PlanetPrefab, usedRadiusIndexes);
                     ++_count;
-                    continue;
                 }
 
-                CreatePlanetEntity(prefabsStorage.PlanetPrefab, usedRadiusIndexes);
-                ++_count;
-            }
-
-            EntityManager.DestroyEntity(e);
-        });        
+                EntityManager.DestroyEntity(e);
+            });
+        });
     }
 
     private Entity CreatePlanetEntity(Entity prefabEntity, List<int> usedIndexes)
