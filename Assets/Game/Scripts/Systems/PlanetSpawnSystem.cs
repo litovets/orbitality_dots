@@ -2,8 +2,8 @@
 using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Rendering;
-using Unity.Physics;
 using System.Collections.Generic;
+using Game.Physics;
 
 public class PlanetSpawnSystem : ComponentSystem
 {
@@ -79,9 +79,12 @@ public class PlanetSpawnSystem : ComponentSystem
         EntityManager.AddComponentData(spawnedEntity, new AddPlanetHUD());
         EntityManager.AddComponentData(spawnedEntity, new ChangeSphereColliderRadius { Value = rndSize*0.5f });
         EntityManager.AddComponentData(spawnedEntity, new NextRocketType { Value = 0 });
-        PhysicsMass planetMass = EntityManager.GetComponentData<PhysicsMass>(spawnedEntity);
-        planetMass.InverseMass /= rndSize;
+        BodyMass planetMass = EntityManager.GetComponentData<BodyMass>(spawnedEntity);
+        planetMass.Value *= rndSize;
         EntityManager.SetComponentData(spawnedEntity, planetMass);
+        SimpleSphereCollider collider = EntityManager.GetComponentData<SimpleSphereCollider>(spawnedEntity);
+        collider.Radius = rndSize * 0.5f;
+        EntityManager.SetComponentData(spawnedEntity, collider);
         EntityManager.SetComponentData(spawnedEntity,
             new Translation { Value = new float3(math.cos(_random.NextFloat(0f, 1f) * math.PI), 0f, math.sin(_random.NextFloat(0f, 1f) * math.PI)) * rndOrbitRadius });
 

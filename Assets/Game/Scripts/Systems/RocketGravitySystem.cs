@@ -1,6 +1,5 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
-using Unity.Physics;
 using Unity.Transforms;
 
 public class RocketGravitySystem : ComponentSystem
@@ -12,16 +11,16 @@ public class RocketGravitySystem : ComponentSystem
         if (GetSingleton<GamePause>().IsOn)
             return;
 
-        Entities.ForEach((Entity e, ref Translation rocketTranslation, ref Velocity vel, ref RocketBaseStats stats) =>
+        Entities.ForEach((Entity e, ref Translation rocketTranslation, ref Velocity vel, ref RocketBaseStats stats, ref BodyMass rMass) =>
         {
             float3 rocketPos = rocketTranslation.Value;
             float3 rocketVel = vel.Value;
-            float rocketMass = stats.Weight;
+            float rocketMass = rMass.Value;
 
-            Entities.WithNone<RocketTag>().ForEach((ref Translation bodyTranslation, ref PhysicsMass bodyMass) =>
+            Entities.WithNone<RocketTag>().ForEach((ref Translation bodyTranslation, ref BodyMass pMass) =>
             {
                 float distance = math.distance(rocketPos, bodyTranslation.Value);
-                float gravityForce = (float)(G * rocketMass / (bodyMass.InverseMass * distance * distance));
+                float gravityForce = (float)(G * rocketMass * pMass.Value / (distance * distance));
                 float3 gravityDir = math.normalize(bodyTranslation.Value - rocketPos);
                 rocketVel += gravityDir * gravityForce * Time.DeltaTime;
             });

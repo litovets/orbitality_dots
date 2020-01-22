@@ -10,11 +10,11 @@ public class RocketMovementSystem : ComponentSystem
         if (GetSingleton<GamePause>().IsOn)
             return;
 
-        Entities.ForEach((Entity e, ref RocketTag rocketTag, ref RocketBaseStats baseStats, ref Velocity velocity, ref Translation translation) =>
+        Entities.ForEach((Entity e, ref RocketTag rocketTag, ref RocketBaseStats baseStats, ref Velocity velocity, ref Translation translation, ref BodyMass bodyMass) =>
         {
             EntityManager.SetComponentData(e, new Translation { Value = translation.Value + velocity.Value * Time.DeltaTime });
 
-            Velocity nextVelocity = new Velocity { Value = velocity.Value + math.normalize(velocity.Value)*baseStats.Acceleration / baseStats.Weight };
+            Velocity nextVelocity = new Velocity { Value = velocity.Value + math.normalize(velocity.Value)*baseStats.Acceleration / bodyMass.Value };
             EntityManager.SetComponentData(e, nextVelocity);            
         });
     }
